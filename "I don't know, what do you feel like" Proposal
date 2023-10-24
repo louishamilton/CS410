@@ -1,0 +1,34 @@
+Intelligent Dining Decision Assistant Application
+
+Group Members:
+Pauline Brunet, NetID: pbrunet2
+Catherine Orlando, NetID: co24
+Austin Harmon, NetID: austin31
+Mitchell Kopczyk, NetID: kopczyk2
+Louis Hamilton, NetID: ???
+
+Topic Chosen:
+Building an application that aids indecisive users in making informed dining choices by providing personalized restaurant recommendations and insights.
+
+Problem and Relevance to Theme and Class:
+Choosing a restaurant can be a complex decision-making process, made even more challenging due to the vast amount of online information available. Our application intends to make this process more manageable and intelligent. The chosen topic aligns with our Text Information Systems class by incorporating concepts such as semantic analysis, relevance, probability ranking, and collaborative filtering to improve the accuracy and relevance of restaurant recommendations and insights.
+
+Datasets, Algorithms, or Techniques Planned:
+
+Datasets: Utilize publicly available restaurant APIs for obtaining detailed information, reviews, and ratings.
+
+Techniques and Concepts from the Course:
+Semantic Analysis: Understanding user queries and reviews to generate relevant restaurant recommendations.
+Bag of Words Representation & Vector Space Model: For text representation and understanding the context of user preferences and restaurant information.
+Probability Ranking and Relevance: Ensuring that the most suitable restaurant recommendations are shown to the users.
+Collaborative Filtering: Using user-item interactions for personalizing restaurant recommendations.
+Evaluation Metrics (Precision, Recall, MAP): To evaluate the performance and relevance of our recommendations.
+
+Demonstration and Programming Language:
+We plan to conduct user-based evaluations to receive feedback on the relevance and usefulness of our recommendations, as well as the overall user experience of our application.
+
+Programming Language:
+We intend to use languages such as Python for backend development and potentially JavaScript along with suitable frameworks for frontend development.
+
+Workload Justification:
+Tasks Will Go Here… Task1, Task2, Task3, etc…
