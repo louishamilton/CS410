@@ -5,30 +5,50 @@ Pauline Brunet, NetID: pbrunet2
 Catherine Orlando, NetID: co24
 Austin Harmon, NetID: austin31
 Mitchell Kopczyk, NetID: kopczyk2
-Louis Hamilton, NetID: ???
+Louis Hamilton, NetID: louisch3
 
 Topic Chosen:
 Building an application that aids indecisive users in making informed dining choices by providing personalized restaurant recommendations and insights.
 
 Problem and Relevance to Theme and Class:
-Choosing a restaurant can be a complex decision-making process, made even more challenging due to the vast amount of online information available. Our application intends to make this process more manageable and intelligent. The chosen topic aligns with our Text Information Systems class by incorporating concepts such as semantic analysis, relevance, probability ranking, and collaborative filtering to improve the accuracy and relevance of restaurant recommendations and insights.
+Choosing a restaurant can be a complex decision-making process, made even more challenging due to the vast amount of online information available. Our application intends to make this process more manageable and intelligent. The chosen topic aligns with our Text Information Systems class by incorporating concepts such as semantic analysis, relevance, probabilistic ranking, and collaborative filtering to improve the accuracy and relevance of restaurant recommendations and insights.
 
 Datasets, Algorithms, or Techniques Planned:
 
-Datasets: Utilize publicly available restaurant APIs for obtaining detailed information, reviews, and ratings.
+  Datasets: Utilize publicly available restaurant APIs for obtaining detailed information, reviews, and ratings.
 
-Techniques and Concepts from the Course:
-Semantic Analysis: Understanding user queries and reviews to generate relevant restaurant recommendations.
-Bag of Words Representation & Vector Space Model: For text representation and understanding the context of user preferences and restaurant information.
-Probability Ranking and Relevance: Ensuring that the most suitable restaurant recommendations are shown to the users.
-Collaborative Filtering: Using user-item interactions for personalizing restaurant recommendations.
-Evaluation Metrics (Precision, Recall, MAP): To evaluate the performance and relevance of our recommendations.
+  Algorithms: Our current algorithm for relevance (R) is R = (Number of unique query terms in document / Number of query terms) * 100
+
+  Techniques and Concepts from the Course:
+    Semantic Analysis: Understanding user queries and reviews to generate relevant restaurant recommendations.
+    Bag of Words Representation & Vector Space Model: For text representation and understanding the context of user preferences and restaurant information.
+    Probabilistic Relevance Ranking for Text Retrieval: Ensuring that the most suitable restaurant recommendations are shown to the users.
+    Collaborative Filtering: Using user-item interactions for personalizing restaurant recommendations.
+    Evaluation Metrics (Precision, Recall, MAP): To evaluate the performance and relevance of our recommendations.
 
 Demonstration and Programming Language:
 We plan to conduct user-based evaluations to receive feedback on the relevance and usefulness of our recommendations, as well as the overall user experience of our application.
 
 Programming Language:
 We intend to use languages such as Python for backend development and potentially JavaScript along with suitable frameworks for frontend development.
+
+Application Outcome:
+Every time a user enters a query and clicks the “Find Restaurants” button, the system will generate a
+Python list that consists of a collection of restaurants that are relevant to the query. The generation of
+this list is made possible by an inverted index. Next to each restaurant in the results, a relevance score
+will be displayed. The relevance score is calculated based on the following formula: 
+Relevance = (Number of unique query terms in document / Number of query terms) * 100
+
+In this scenario, each restaurant name displayed in the results represents a document. Each document is
+a text file that contains the name of the restaurant on the first line. The next lines contain information
+about the restaurant, which is mostly the food items offered by the restaurant. When the program is not
+running, more restaurant text files can be added to the main folder and the program will incorporate
+these files into the inverted index when it starts.
+
+There is no limit to the number of queries a user can enter. While the program is actively running, the
+user can continually keep entering queries and all results will be maintained. Each new result list will
+be displayed at the top of the previous results. If the collection of result lists exceeds the window
+height, the user will be able to scroll down to the bottom of the results.
 
 Workload Justification:
 Tasks Will Go Here… Task1, Task2, Task3, etc…
