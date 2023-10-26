@@ -35,9 +35,11 @@ We intend to use languages such as Python for backend development and potentiall
 Application Outcome:
 Every time a user enters a query and clicks the “Find Restaurants” button, the system will generate a
 Python list that consists of a collection of restaurants that are relevant to the query. The generation of
-this list is made possible by an inverted index. Next to each restaurant in the results, a relevance score
-will be displayed. The relevance score is calculated based on the following formula: 
+this list is made possible by an inverted index. Next to each restaurant in the results, the city, state, and 
+a relevance score will be displayed. The relevance score is calculated based on the following formula: 
 Relevance = (Number of unique query terms in document / Number of query terms) * 100
+The only exception to the relevance formula is when certain stop words are entered, such as “and” and “the”. 
+Stop words are ignored during the relevance calculation.
 
 In this scenario, each restaurant name displayed in the results represents a document. Each document is
 a text file that contains the name of the restaurant on the first line. The next lines contain information
@@ -49,6 +51,15 @@ There is no limit to the number of queries a user can enter. While the program i
 user can continually keep entering queries and all results will be maintained. Each new result list will
 be displayed at the top of the previous results. If the collection of result lists exceeds the window
 height, the user will be able to scroll down to the bottom of the results.
+
+The user has the option to filter the results by specifying their location with a city and state name. 
+If the user decides to enter their location, the program will still return the original results, 
+except the results that correspond to a different location will be replaced with the text “Location Filter Applied”. 
+The location filter will only allow the user to see the results that correspond to the specified location. The user will still be 
+able to view the count of the other search results for different locations, which could encourage the user to try their 
+query with a different location, or remove the entire filter. To be the most effective, the user should specify their 
+location in the query and the location filter.
+
 
 Workload Justification:
 Tasks Will Go Here… Task1, Task2, Task3, etc…
