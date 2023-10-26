@@ -42,9 +42,9 @@ The only exception to the relevance formula is when certain stop words are enter
 Stop words are ignored during the relevance calculation.
 
 In this scenario, each restaurant name displayed in the results represents a document. Each document is
-a text file that contains the name of the restaurant on the first line. The next lines contain information
-about the restaurant, which is mostly the food items offered by the restaurant. When the program is not
-running, more restaurant text files can be added to the main folder and the program will incorporate
+a text file that contains the name of the restaurant on the first line. The city and state are included on the second line.
+The next lines contain information about the restaurant, which is mostly the food items offered by the restaurant. 
+When the program is not running, more restaurant text files can be added to the main folder and the program will incorporate
 these files into the inverted index when it starts.
 
 There is no limit to the number of queries a user can enter. While the program is actively running, the
