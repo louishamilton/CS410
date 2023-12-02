@@ -14,11 +14,14 @@ class Search:
         self.invertedindex = invertedindex = defaultdict(list)
         self.list1 = list1 = []
         self.titlelist = titlelist= []
-        #created a new folder on the desktop and added a lot of text files
-        #replaced \ with \\ in the folder path
 
-        filelocations = "C:\\Users\\Admin\\Desktop\\restaurants"
-        os.chdir(filelocations) #make the program read files from the specified path
+        #resturant folder in the same path as the script
+        self.filelocations = os.path.join(os.path.dirname(__file__), "restaurants")
+        if not os.path.exists(self.filelocations):
+            messagebox.showerror("Error", "Restaurant folder does not exist")
+            exit()
+
+        os.chdir(self.filelocations) #make the program read files from the specified path
 
         for eachfile in os.listdir(): #for every file in the folder
 
@@ -26,8 +29,6 @@ class Search:
                 self.list1.append(r.read()) #append the contents of the file to list1
 
                     
-
-
         for eachdoccontent in list1: #for each batch of text in a file
             tokens = eachdoccontent.split() #split all text into tokens
 
