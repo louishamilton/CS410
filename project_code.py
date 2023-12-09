@@ -1,19 +1,25 @@
 import os
 from tkinter import *
 from collections import defaultdict
+import math
 
 class RestaurantSearch:
     def __init__(self):
         # Initializes the RestaurantSearch class, creating the inverted index and document list
-        self.inverted_index = defaultdict(list)
-        self.documents = []
+        self.inverted_index = dict()
+        self.documents = []              
+        self.doc_lengths = dict()
+        self.total_doc_len = 0.0
         self.load_and_index_files()
+        self.document_count = len(self.documents)
+        self.avg_doc_len = self.total_doc_len / self.document_count
 
     def load_and_index_files(self):
         # Loads restaurant data from files and indexes them for search
         file_location = os.path.join(os.path.dirname(__file__), "restaurants")
         if not os.path.exists(file_location):
-            messagebox.showerror("Error", "Restaurant folder does not exist")
+            #messagebox.showerror("Error", "Restaurant folder does not exist")
+            print("Error restaurant folder not found")
             exit()
 
         for filename in os.listdir(file_location):
@@ -26,21 +32,38 @@ class RestaurantSearch:
         # Creates an index of words from the document content for search functionality
         tokens = content.lower().split()
         doc_id = len(self.documents) - 1
+        self.doc_lengths[doc_id] = len(tokens)
+        # redo with form [token][doc_id]
+        self.inverted_index[doc_id] = dict()
         for token in tokens:
             cleaned_token = token.strip(".,").replace("and", "").replace("the", "")
-            if doc_id not in self.inverted_index[cleaned_token]:
-                self.inverted_index[cleaned_token].append(doc_id)
+            if cleaned_token not in self.inverted_index:
+                self.inverted_index[cleaned_token] = dict()
+            if doc_id in self.inverted_index[cleaned_token]:
+                self.inverted_index[cleaned_token][doc_id] += 1
+            else:
+                self.inverted_index[cleaned_token][doc_id] = 1
+        self.total_doc_len += len(tokens)
 
     def search(self, query, location):
         # Searches indexed documents based on the query and location, returning relevant results
         query_terms = query.lower().split()
-        query_len = len(query_terms)
+        query_counts = dict()
+        qt_df = dict()
+        query_len = len(query_terms)      
+
         result_list = []
         for term in query_terms:
             cleaned_term = term.strip(".,").replace("and", "").replace("the", "")
-            result_list.extend(self.inverted_index[cleaned_term])
+            if cleaned_term in self.inverted_index:
+                query_counts[cleaned_term] = query_counts.get(cleaned_term, 0) + 1
+                qt_df[cleaned_term] = len(self.inverted_index[cleaned_term])
+                result_list.extend(self.inverted_index[cleaned_term])
 
-        rank_dict = {doc_id: result_list.count(doc_id) / query_len for doc_id in set(result_list)}
+        unique_results = set(result_list)
+        num_unique_results = len(unique_results)
+
+        rank_dict = {doc_id: self.bm25(doc_id, query_counts, num_unique_results, qt_df) for doc_id in unique_results}
         ranked_results = sorted(rank_dict, key=rank_dict.get, reverse=True)
 
         return self.format_results(ranked_results, rank_dict, location), len(ranked_results)
@@ -49,14 +72,41 @@ class RestaurantSearch:
         # Formats the search results for display, filtering by location if specified
         output = []
         location_match_count = 0
+        # Scale every result as a percentage of the most relevant result
+        top_score = rank_dict[ranked_results[0]]
         for doc_id in ranked_results:
             title, loc = self.documents[doc_id].split("\n")[:2]
             if location and loc != location:
                 continue
             location_match_count += 1
-            relevance = round(rank_dict[doc_id] * 100, 3)
+            relevance = '{:.3f}'.format(round((rank_dict[doc_id] / top_score) * 100, 3))
             output.append(f"{title}, LOC: {loc}, relevance: {relevance}%")
         return output, location_match_count
+
+    def bm25(self, doc_id, query_counts, num, qt_df):
+        b_ = .75
+        k1_ = 1.6
+        k3_ = 1
+
+        okapi_bm25 = 0
+
+        for t in query_counts:
+            if doc_id in self.inverted_index[t]:
+                # Inverse Document Frequency Term
+                IDF = math.log(
+                    1.0 + (self.document_count - qt_df[t] + 0.5) / (qt_df[t] + 0.5));
+
+                # Term Frequency with Document Length Normalization
+                TF = ((k1_ + 1.0) * self.inverted_index[t][doc_id]) / ((k1_ * ((1.0 - b_) + b_ * self.doc_lengths[doc_id] / self.avg_doc_len))
+                              + self.inverted_index[t][doc_id]);
+
+                # QTF handles how to value appearances of a term multiple times in the same query
+                QTF = ((k3_ + 1.0) * query_counts[t]) / (k3_ + query_counts[t]);
+
+                #Okapi BM25
+                okapi_bm25 += TF * IDF * QTF
+
+        return okapi_bm25
 
 
 class GUI:
