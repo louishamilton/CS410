@@ -2,6 +2,7 @@ import os
 from tkinter import *
 from collections import defaultdict
 import math
+import re
 
 class RestaurantSearch:
     def __init__(self):
@@ -73,10 +74,17 @@ class RestaurantSearch:
         output = []
         location_match_count = 0
         # Scale every result as a percentage of the most relevant result
-        top_score = rank_dict[ranked_results[0]]
+        top_score = 0
+
         for doc_id in ranked_results:
             title, loc = self.documents[doc_id].split("\n")[:2]
-            if location and loc != location:
+            if location and not self.match_location(loc, location):
+                continue
+            top_score = max(top_score, rank_dict[doc_id])
+
+        for doc_id in ranked_results:
+            title, loc = self.documents[doc_id].split("\n")[:2]
+            if location and not self.match_location(loc, location):
                 continue
             location_match_count += 1
             relevance = '{:.3f}'.format(round((rank_dict[doc_id] / top_score) * 100, 3))
@@ -107,6 +115,12 @@ class RestaurantSearch:
                 okapi_bm25 += TF * IDF * QTF
 
         return okapi_bm25
+
+    def match_location(self, a, b):
+        regex = re.compile('[^a-zA-Z]')
+        a_new = regex.sub('', a).lower()
+        b_new = regex.sub('', b).lower()
+        return a_new == b_new
 
 
 class GUI:
